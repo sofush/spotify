@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch and debug",
+            "type": "php",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/main.php",
+            "cwd": "${workspaceFolder}",
+            "port": 9003,
+            "runtimeArgs": [
+                "-dxdebug.start_with_request=yes",
+                "src/main.php"
+            ],
+            "env": {
+                "XDEBUG_MODE": "debug,develop",
+                "XDEBUG_CONFIG": "client_port=9003"
+            }
+        }
+    ]
+}
