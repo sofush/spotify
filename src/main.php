@@ -19,9 +19,6 @@ $stream->setFormatter(new ConsoleFormatter());
 $log->pushHandler($stream);
 
 $server = new HttpServer(function (ServerRequestInterface $request) {
-    global $log;
-    $log->info('test', ['context' => '1']);
-
     return Response::plaintext(
         'Hello World!\n'
     );
@@ -42,6 +39,10 @@ $server->on('error', function (Throwable $e) {
         $e->getline(),
         $e->getMessage(),
     );
+    $msg = Colorizer::builder()
+        ->push($msg, null, PHP_EOL)
+        ->push(strval($e), Color::new(ColorCode::BrightRed))
+        ->build();
     $log->error($msg);
 });
 

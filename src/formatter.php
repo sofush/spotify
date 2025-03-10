@@ -12,6 +12,9 @@ final class ConsoleFormatter implements FormatterInterface
 {
     private Color $datetimeColor;
     private Color $channelColor;
+    private Color $contextColor;
+    private Color $contextKeyColor;
+    private Color $contextValueColor;
 
     private Color $debugLevelColor;
     private Color $infoLevelColor;
@@ -23,9 +26,12 @@ final class ConsoleFormatter implements FormatterInterface
     {
         $this->datetimeColor = Color::new(ColorCode::Green)->dim();
         $this->channelColor = Color::new(ColorCode::BrightYellow)->dim();
+        $this->contextColor = Color::new(ColorCode::BrightBlack);
+        $this->contextKeyColor = Color::new(ColorCode::BrightMagenta);
+        $this->contextValueColor = Color::new(ColorCode::BrightBlue);
 
-        $this->debugLevelColor = Color::new(ColorCode::BrightBlue)->bold();
-        $this->infoLevelColor = Color::new(ColorCode::Blue)->bold();
+        $this->debugLevelColor = Color::new(ColorCode::BrightBlack);
+        $this->infoLevelColor = Color::new(ColorCode::BrightBlue);
         $this->noticeLevelColor = Color::new(ColorCode::BrightGreen)->bold();
         $this->warningLevelColor = Color::new(ColorCode::BrightYellow)->bold();
         $this->errorLevelColor = Color::new(ColorCode::Red)->bold();
@@ -34,7 +40,9 @@ final class ConsoleFormatter implements FormatterInterface
     public function format(LogRecord $record)
     {
         $datetime = $record->datetime->format('Y-m-d H:i:s.v');
-        $level = $record->level->getName();
+        $level = mb_strtolower($record->level->name);
+        $level = "($level)";
+        $level = mb_str_pad($level, 11, ' ', STR_PAD_LEFT);
         $levelColor = match ($record->level) {
             Level::Debug => $this->debugLevelColor,
             Level::Info => $this->infoLevelColor,
@@ -46,50 +54,69 @@ final class ConsoleFormatter implements FormatterInterface
             default => Color::new(ColorCode::Reset),
         };
 
-        $output = Colorizer::builder()
+        $prefix = Colorizer::builder()
             ->push($datetime, $this->datetimeColor, ' ')
-            ->push("[$level]", $levelColor, ' ')
-            ->push($record->channel, $this->infoLevelColor)
-            ->push(':  ', Color::new());
+            ->push($level, $levelColor, ' ')
+            ->push($record->channel, $this->channelColor);
 
-        return $output->finalize();
+        $final = Colorizer::builder()
+            ->push($prefix->build())
+            ->push(':  ')
+            ->push($record->message, null, PHP_EOL);
 
-        // $message = sprintf(
-        //     '%s %s%s%s',
-        //     $prefix,
-        //         $this::ORANGE,
-        //     $record->message,
-        //     PHP_EOL
-        // );
+        if (count($record->context) > 0) {
+            $plen = $prefix->len();
+            $padded = mb_str_pad("context", $plen, ' ', STR_PAD_LEFT);
+            $final->push($padded, $this->contextColor, ':  ');
 
-        // $spaces = str_repeat(' ', mb_strlen($prefix));
+            foreach ($record->context as $key => $value) {
+                $keystr = $this->stringify($key);
+                $valuestr = $this->stringify($value);
 
-        // if (count($record->context) > 0) {
-        //     $message = sprintf(
-        //         '%s%s%scontext = [%s]%s',
-        //         $message,
-        //         PHP_EOL,
-        //         $spaces,
-        //         implode(', ', $record->context),
-        //     );
-        // }
+                $final
+                    ->push($keystr, $this->contextKeyColor)
+                    ->push(' => ')
+                    ->push($valuestr, $this->contextValueColor);
 
-        // if (count($record->extra) > 0) {
-        //     $message = sprintf(
-        //         '%s%s%scontext = [%s]%s',
-        //         $message,
-        //         PHP_EOL,
-        //         $spaces,
-        //         implode(', ', $record->extra),
-        //         PHP_EOL,
-        //     );
-        // }
+                if ($key !== array_key_last($record->context)) {
+                    $final->push(', ');
+                }
+            }
 
-        // return $message;
+            $final
+                ->push(' ' . PHP_EOL, $this->contextColor);
+        }
+
+        return $final->build();
     }
 
     public function formatBatch(array $records)
     {
         return array_map($this::format, $records);
+    }
+
+    private function stringify(mixed $obj)
+    {
+        try {
+            if ($obj === null) {
+                return '<null>';
+            }
+
+            if ($obj === true) {
+                return '<true>';
+            }
+
+            if ($obj === false) {
+                return '<false>';
+            }
+
+            if (is_array($obj)) {
+                return '[' . implode(', ', $obj) . ']';
+            }
+
+            return strval($obj);
+        } catch (Throwable $e) {
+            return '<cannot convert to string>';
+        }
     }
 }

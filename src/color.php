@@ -77,9 +77,12 @@ final class Color
 final class Colorizer
 {
     private string $output = "";
+    private Color $reset;
+    private int $len = 0;
 
     private function __construct()
     {
+        $this->reset = Color::new();
     }
 
     public static function builder(): Colorizer
@@ -89,18 +92,25 @@ final class Colorizer
 
     public function push(string $str, Color|null $color = null, string $end = ''): Colorizer
     {
+        $this->len += mb_strlen($str) + mb_strlen($end);
         $color ??= Color::new();
-        $this->output .= sprintf('%s%s%s', $color->seq(), $str, $end ?? '');
+        $this->output .= sprintf(
+            '%s%s%s%s',
+            $color->seq(),
+            $str,
+            $end ?? '',
+            $this->reset->seq(),
+        );
         return $this;
     }
 
-    public function finalize(): string
+    public function len(): int
     {
-        return sprintf(
-            "%s%s%s",
-            $this->output,
-            "\x1b[0m",
-            PHP_EOL,
-        );
+        return $this->len;
+    }
+
+    public function build(): string
+    {
+        return $this->output;
     }
 }
