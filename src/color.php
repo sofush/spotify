@@ -90,8 +90,9 @@ final class Colorizer
         return new Colorizer();
     }
 
-    public function push(string $str, Color|null $color = null, string $end = ''): Colorizer
+    public function push(mixed $obj, Color|null $color = null, string $end = ''): Colorizer
     {
+        $str = strval($obj);
         $this->len += mb_strlen($str) + mb_strlen($end);
         $color ??= Color::new();
         $this->output .= sprintf(
