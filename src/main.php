@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . '../vendor/autoload.php';
-require_once __DIR__ . '/formatter.php';
+require_once __DIR__ . '/logging/formatter.php';
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
