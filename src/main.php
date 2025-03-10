@@ -46,8 +46,21 @@ $server->on('error', function (Throwable $e) {
     $log->error($msg);
 });
 
-$addr = '127.0.0.1:8080';
+$fd = getenv('LISTEN_FDS_FIRST_FD');
+$port = getenv('PORT');
+
+if ($fd !== false) {
+    $log->debug('Starting TCP server backed by file descriptor...');
+    $addr = "php://fd/$fd";
+} else if ($port !== false) {
+    $log->debug("Starting TCP server with port $port...");
+    $addr = "127.0.0.1:$port";
+} else {
+    $log->debug("Starting TCP server with random port...");
+    $addr = '127.0.0.1:0';
+}
+
 $socket = new SocketServer($addr);
 $server->listen($socket);
 
-$log->debug("Server running at http://$addr");
+$log->debug('Server running at ' . $socket->getAddress());
