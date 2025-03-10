@@ -18,14 +18,68 @@ $stream = new StreamHandler('php://stdout');
 $stream->setFormatter(new ConsoleFormatter());
 $log->pushHandler($stream);
 
-$server = new HttpServer(function (ServerRequestInterface $request) {
-    return Response::plaintext(
-        'Hello World!\n'
+function serve_static(string $filename)
+{
+    $body = file_get_contents(__DIR__ . '/../static/' . $filename);
+
+    preg_match('/^[^\/]+\.(html|css|js)$/', $filename, $ext);
+    $mime = match ($ext[1]) {
+        'css' => 'text/css',
+        'js' => 'text/javascript',
+        'html' => 'text/html',
+        default => 'text/plaintext',
+    };
+
+    return new Response(
+        200,
+        ['Content-Type' => "$mime;charset=UTF-8"],
+        $body,
+    );
+}
+
+$middlewares = [
+    function (ServerRequestInterface $request) use ($log) {
+        $methodColor = Color::new()->code(ColorCode::Magenta);
+        $uriColor = Color::new()->bold();
+        $out = Colorizer::builder()
+            ->push($request->getMethod(), $methodColor, ' ')
+            ->push($request->getUri()->getPath(), $uriColor, ' ')
+            ->build();
+
+        $log->info($out);
+    },
+    function (ServerRequestInterface $request) {
+        if (in_array($request->getUri()->getPath(), ['', '/'])) {
+            return serve_static('index.html');
+        }
+    },
+    function (ServerRequestInterface $request) {
+        $path = $request->getUri()->getPath();
+
+        if (preg_match('/^\/static\/([^\/]+)$/', $path, $matches)) {
+            $filename = $matches[1];
+            return serve_static($filename);
+        }
+    }
+];
+
+$server = new HttpServer(function (ServerRequestInterface $request) use ($middlewares) {
+    foreach ($middlewares as $middleware) {
+        $res = $middleware($request);
+
+        if ($res instanceof Response) {
+            return $res;
+        }
+    }
+
+    return new Response(
+        Response::STATUS_NOT_FOUND,
+        ['Content-Type' => 'text/html'],
+        '<h1>404 not found</h1>'
     );
 });
 
-$server->on('error', function (Throwable $e) {
-    global $log;
+$server->on('error', function (Throwable $e) use ($log) {
     $file = mb_strtolower($e->getFile());
     $dir = mb_strtolower(getcwd());
 
