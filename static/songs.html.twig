@@ -1,0 +1,90 @@
+<section id="songs">
+    <style>
+        #songs>section {
+            background-color: red;
+        }
+
+        #songs>menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            list-style-type: none;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        #songs>menu>li {
+            display: flex;
+            flex-direction: row;
+            height: 64px;
+        }
+
+        #songs>menu>li>*:not(.cover) {
+            background-color: var(--color-bg-input);
+        }
+
+        #songs>menu>li>*:first-child {
+            border-radius: var(--border-radius) 0px 0px var(--border-radius);
+        }
+
+        #songs>menu>li>*:last-child {
+            border-radius: 0px var(--border-radius) var(--border-radius) 0px;
+        }
+
+        #songs>menu>li>p {
+            margin: 0px;
+            align-content: center;
+            height: 100%;
+        }
+
+        #songs>menu>li>*:nth-child(2) {
+            padding-left: 18px;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        #songs>menu>li>*:nth-child(3) {
+            padding-right: 18px;
+        }
+
+        #songs>menu>li>*.play {
+            min-width: 64px;
+            height: 64px;
+            align-content: center;
+            text-align: center;
+            padding-right: 10px;
+        }
+
+        #songs>menu>li>*.duration {
+            font-family: 'Incosolata', sans-serif;
+            font-weight: 450;
+        }
+
+        #songs>menu>h2 {
+            margin: 0px;
+            font-weight: 500;
+        }
+
+        #songs>menu>.more {
+            color: var(--color-text-more);
+            font-weight: bold;
+            inset: 20px;
+        }
+    </style>
+
+    <menu>
+        <h2>{{ desc }}</h2>
+        {% for song in songs %}
+        <li>
+            <img class="cover" src="/static/64x64.png" alt="Cover art">
+            <p>{{ song.getTitle() }}</p>
+            <p class="duration">02:51</p>
+            <div class="play">
+                <img src="/static/play.svg" width="21.34" height="26" alt="Play button">
+            </div>
+        </li>
+        {% endfor %}
+        <span class="more">Se mere</span>
+    </menu>
+</section>

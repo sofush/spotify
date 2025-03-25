@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" type="image/svg+xml" href="/static/logo.svg">
+    <style>
+        header {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        @media screen and (max-width: 1000px) {
+            header {
+                flex-wrap: wrap;
+            }
+        }
+
+        header>img {
+            border-radius: 8px;
+            margin: auto 0px auto 0px;
+            border: 2.0px solid var(--color-text-brand);
+            box-shadow: 3.5px 3.5px 1px rgb(from #04072D r g b / 15%);
+        }
+
+        header>h1 {
+            font-family: serif;
+            margin: auto 10px auto 0px;
+            font-size: 28px;
+            color: #04072D;
+            text-shadow: 2px 3px 0px rgb(from #04072D r g b / 10%);
+        }
+
+        header>input {
+            background: url(/static/search.svg) no-repeat scroll calc(-6px + 48px / 2) 12px;
+            flex: 1 1 100%;
+
+            font-size: 18px;
+            font-weight: 450;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg-input);
+
+            height: 48px;
+            width: 100%;
+            margin: auto 0px;
+            padding-left: calc(10px + 48px + 10px);
+
+            border: 0;
+            border-radius: var(--border-radius);
+            outline: 3px solid transparent;
+        }
+
+        header>input:focus {
+            outline: 3px solid var(--color-bg-accent);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="/static/logo.png" alt="Logo" height="80" width="80">
+        <h1>Musikafspiller</h1>
+        <input type="text" name="search" id="search" placeholder="Søg efter sange, albummer, eller playlister">
+    </header>
+
+    <main id="main">
+        {{ songs|raw }}
+        {{ playlists|raw }}
+    </main>
+</body>
+
+</html>

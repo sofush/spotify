@@ -16,6 +16,10 @@
     "require": {
         "monolog/monolog": "^3.8",
         "react/http": "^1.11",
-        "react/socket": "^1.16"
+        "react/socket": "^1.16",
+        "doctrine/dbal": "^4.2",
+        "doctrine/orm": "^3.3",
+        "symfony/cache": "^7.2",
+        "twig/twig": "^3.0"
     }
 }

@@ -1,0 +1,64 @@
+:root {
+    --border-radius: 6px;
+    --color-bg-input: rgb(from #272727 r g b / 9%);
+    --color-bg-accent: #CFCAA4;
+    --color-text-brand: #04072d;
+    --color-text-more: #535355;
+
+    user-select: none;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #FFF9D0;
+    margin: 80px 120px;
+}
+
+@media screen and (max-width: 1000px) {
+    body {
+        margin-right: 60px;
+        margin-left: 60px;
+    }
+}
+
+@media screen and (max-height: 800px) {
+    body {
+        margin-top: 60px;
+        margin-bottom: 60px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    body {
+        margin-right: 20px;
+        margin-left: 20px;
+    }
+}
+
+@media screen and (max-height: 600px) {
+    body {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    input[type="text"] {
+        transition: all linear 0.15s;
+    }
+}
+
+@font-face {
+    font-family: Inter;
+    src: url(/static/Inter.ttf);
+}
+
+@font-face {
+    font-family: Newsreader;
+    src: url(/static/Newsreader.ttf);
+}
+
+@font-face {
+    font-family: Inconsolata;
+    src: url(/static/Inconsolata.ttf);
+}

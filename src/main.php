@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . '../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/logging/formatter.php';
 
 use Monolog\Logger;
@@ -20,15 +20,33 @@ $log->pushHandler($stream);
 
 function serve_static(string $filename)
 {
-    $body = file_get_contents(__DIR__ . '/../static/' . $filename);
+    $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../static');
+    $twig = new \Twig\Environment($loader);
 
-    preg_match('/^[^\/]+\.(html|css|js)$/', $filename, $ext);
+    preg_match('/^[^\/]+\.(html|css|js|png|svg)$/', $filename, $ext);
     $mime = match ($ext[1]) {
         'css' => 'text/css',
         'js' => 'text/javascript',
         'html' => 'text/html',
+        'png' => 'image/png',
+        'svg' => 'image/svg+xml',
         default => 'text/plaintext',
     };
+
+    if ($filename === 'index.html') {
+        $songs = $twig->render('songs.html.twig', [
+            'desc' => 'Likede sange',
+            'songs' => [
+                new Song('one'),
+                new Song('two'),
+            ]
+        ]);
+        $context = ['songs' => $songs];
+    }
+
+    $body = $mime === 'text/html'
+        ? $twig->render("$filename.twig", $context ?? [])
+        : file_get_contents(__DIR__ . "/../static/$filename");
 
     return new Response(
         200,
