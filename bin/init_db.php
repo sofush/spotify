@@ -10,9 +10,20 @@ $conn->executeStatement('TRUNCATE TABLE artists;');
 $conn->executeStatement('TRUNCATE TABLE songs;');
 $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 1');
 
-$artist = new Artist('Daft Punk', []);
-$song = new Song('Motherboard', [$artist]);
-$song = new Song('Lose Yourself to Dance', [$artist]);
-$em->persist($artist);
-$em->persist($song);
+$daftPunk = new Artist('Daft Punk', []);
+$pharell = new Artist('Pharell Williams', []);
+$artists = [$daftPunk, $pharell];
+
+foreach ($artists as $artist) {
+    $em->persist($artist);
+}
+
+$motherboard = new Song('Motherboard', [$daftPunk]);
+$loseYourself = new Song('Lose Yourself to Dance', [$daftPunk, $pharell]);
+$songs = [$motherboard, $loseYourself];
+
+foreach ($songs as $song) {
+    $em->persist($song);
+}
+
 $em->flush();
