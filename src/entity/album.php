@@ -16,7 +16,7 @@ class Album
     #[ORM\Column(type: 'string')]
     private string $title;
 
-    #[ORM\OneToOne(targetEntity: Artist::class)]
+    #[ORM\ManyToOne(targetEntity: Artist::class)]
     #[ORM\JoinColumn(name: 'artist_id', referencedColumnName: 'id')]
     private Artist $artist;
 
