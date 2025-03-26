@@ -25,7 +25,7 @@ class Artist
     public function __construct($name, $songs)
     {
         $this->name = $name;
-        $this->songs = $songs ?? new ArrayCollection();
+        $this->songs = new ArrayCollection($songs ?? []);
     }
 
     public function getName()
