@@ -3,8 +3,11 @@
 require_once __DIR__ . '/../src/database.php';
 require_once __DIR__ . '/../src/entity/song.php';
 require_once __DIR__ . '/../src/entity/artist.php';
+require_once __DIR__ . '/../src/entity/album.php';
 
 $conn->executeStatement('SET FOREIGN_KEY_CHECKS = 0');
+$conn->executeStatement('TRUNCATE TABLE albums_songs;');
+$conn->executeStatement('TRUNCATE TABLE albums;');
 $conn->executeStatement('TRUNCATE TABLE songs_artists;');
 $conn->executeStatement('TRUNCATE TABLE artists;');
 $conn->executeStatement('TRUNCATE TABLE songs;');
@@ -26,5 +29,8 @@ $songs = [$motherboard, $loseYourself, $contact];
 foreach ($songs as $song) {
     $em->persist($song);
 }
+
+$randomAccess = new Album('Random Access Memories', 'motherboard.jpg', $daftPunk, $songs);
+$em->persist($randomAccess);
 
 $em->flush();

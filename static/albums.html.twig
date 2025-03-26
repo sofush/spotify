@@ -1,0 +1,54 @@
+<section id="albums">
+    <style>
+        #albums menu {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #albums ul {
+            padding: 0px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        #albums li {
+            width: 200px;
+            gap: 3px;
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #albums li>span {
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            color: var(--color-text-normal);
+        }
+
+        #albums img {
+            border-radius: var(--border-radius);
+        }
+
+        #albums li:hover>img {
+            transition: transform ease 0.1s;
+            transform: scale(1.03);
+        }
+    </style>
+
+    <menu>
+        <h2>Albummer</h2>
+        <ul>
+            {% for album in albums %}
+            <li class="hover">
+                <img class="cover" src="/static/{{ album.getImageUrl() }}" alt="Album cover art">
+                <span>{{ album.getTitle() }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        <span class="more hover">Vis flere</span>
+    </menu>
+</section>

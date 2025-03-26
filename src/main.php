@@ -6,6 +6,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/logging/formatter.php';
 require_once __DIR__ . '/entity/song.php';
 require_once __DIR__ . '/entity/artist.php';
+require_once __DIR__ . '/entity/album.php';
 require_once __DIR__ . '/database.php';
 
 use Monolog\Logger;
@@ -50,7 +51,14 @@ function serve_static(string $filename)
             'desc' => 'Likede sange',
             'songs' => $songs,
         ]);
-        $context = ['songs' => $songsHtml];
+        $albums = $em->getRepository(Album::class)->findAll();
+        $albumsHtml = $twig->render('albums.html.twig', [
+            'albums' => $albums,
+        ]);
+        $context = [
+            'songs' => $songsHtml,
+            'albums' => $albumsHtml
+        ];
     }
 
     $body = $mime === 'text/html'
