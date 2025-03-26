@@ -17,6 +17,7 @@ body {
 
 .hover {
     outline: 2px solid transparent;
+    cursor: pointer;
 }
 
 .hover:hover {
