@@ -16,6 +16,9 @@ class Song
     #[ORM\Column(type: 'string')]
     private string $title;
 
+    #[ORM\Column(type: 'string')]
+    private string $duration;
+
     /**
      * @var Collection<int, Artist>
      */
@@ -23,9 +26,10 @@ class Song
     #[ORM\JoinTable(name: 'songs_artists')]
     private Collection $artists;
 
-    public function __construct($title, $artists)
+    public function __construct($title, $duration, $artists)
     {
         $this->title = $title;
+        $this->duration = $duration;
         $this->artists = new ArrayCollection($artists ?? []);
     }
 
@@ -37,6 +41,16 @@ class Song
     public function setTitle($title)
     {
         $this->title = $title;
+    }
+
+    public function getDuration()
+    {
+        return $this->duration;
+    }
+
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
     }
 
     public function getArtists()
