@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/logging/formatter.php';
+require_once __DIR__ . '/entity/song.php';
+require_once __DIR__ . '/database.php';
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -37,8 +39,8 @@ function serve_static(string $filename)
         $songs = $twig->render('songs.html.twig', [
             'desc' => 'Likede sange',
             'songs' => [
-                new Song('one'),
-                new Song('two'),
+                new Song('Song one', ['Artist one']),
+                new Song('Song two', ['Artist one', 'Artist two']),
             ]
         ]);
         $context = ['songs' => $songs];
