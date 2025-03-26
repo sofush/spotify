@@ -18,9 +18,10 @@ foreach ($artists as $artist) {
     $em->persist($artist);
 }
 
-$motherboard = new Song('Motherboard', '02:51', [$daftPunk]);
-$loseYourself = new Song('Lose Yourself to Dance', '05:53', [$daftPunk, $pharell]);
-$songs = [$motherboard, $loseYourself];
+$motherboard = new Song('Motherboard', '02:51', 'motherboard.jpg', [$daftPunk]);
+$loseYourself = new Song('Lose Yourself to Dance', '05:53', 'motherboard.jpg', [$daftPunk, $pharell]);
+$contact = new Song('Contact', '06:23', 'motherboard.jpg', [$daftPunk]);
+$songs = [$motherboard, $loseYourself, $contact];
 
 foreach ($songs as $song) {
     $em->persist($song);

@@ -129,13 +129,18 @@
             transform: scale(1.25);
             transition: transform ease 0.1s;
         }
+
+        #songs .cover:hover {
+            border-radius: 0;
+            transform: scale(2);
+        }
     </style>
 
     <menu>
         <h2>{{ desc }}</h2>
         {% for song in songs %}
         <li>
-            <img class="cover" src="/static/64x64.png" alt="Cover art">
+            <img class="cover" src="/static/{{ song.getImageUrl() }}" alt="Cover art">
             <ul class="credit">
                 <li class="title">{{ song.getTitle() }}</li>
                 <li>

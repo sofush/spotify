@@ -26,7 +26,7 @@ function serve_static(string $filename)
     $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../static');
     $twig = new \Twig\Environment($loader);
 
-    preg_match('/^[^\/]+\.(html|css|js|png|svg|ttf)$/', $filename, $ext);
+    preg_match('/^[^\/]+\.(html|css|js|png|jpg|svg|ttf)$/', $filename, $ext);
 
     if (count($ext) < 2) {
         return;
@@ -39,6 +39,7 @@ function serve_static(string $filename)
         'png' => 'image/png',
         'svg' => 'image/svg+xml',
         'ttf' => 'font/ttf',
+        'jpg' => 'image/jpeg',
         default => 'text/plaintext',
     };
 
