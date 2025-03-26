@@ -1,9 +1,5 @@
 <section id="songs">
     <style>
-        #songs>section {
-            background-color: red;
-        }
-
         #songs>menu {
             display: flex;
             flex-direction: column;
@@ -71,6 +67,34 @@
             font-weight: bold;
             inset: 20px;
         }
+
+        #songs .artists {
+            display: flex;
+            list-style-type: none;
+            padding: 0px;
+        }
+
+        #songs .title {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        #songs .artist {
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        #songs .credit {
+            display: flex;
+            flex-direction: column;
+            list-style-type: none;
+            justify-content: center
+        }
+
+        #songs .artist:hover {
+            text-decoration: underline;
+        }
     </style>
 
     <menu>
@@ -78,7 +102,19 @@
         {% for song in songs %}
         <li>
             <img class="cover" src="/static/64x64.png" alt="Cover art">
-            <p>{{ song.getTitle() }}</p>
+            <ul class="credit">
+                <li class="title">{{ song.getTitle() }}</li>
+                <li>
+                    <ul class="artists">
+                        {% for artist in song.getArtists() %}
+                        <li class="artist">{{ artist.getName() }}</li>
+                        {% if artist != song.getArtists().last() %}
+                        <li class="artist">,&nbsp;</li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
             <p class="duration">02:51</p>
             <div class="play">
                 <img src="/static/play.svg" width="21.34" height="26" alt="Play button">

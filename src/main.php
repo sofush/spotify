@@ -5,6 +5,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/logging/formatter.php';
 require_once __DIR__ . '/entity/song.php';
+require_once __DIR__ . '/entity/artist.php';
 require_once __DIR__ . '/database.php';
 
 use Monolog\Logger;
@@ -41,14 +42,13 @@ function serve_static(string $filename)
     };
 
     if ($filename === 'index.html') {
-        $songs = $twig->render('songs.html.twig', [
+        global $em;
+        $songs = $em->getRepository(Song::class)->findAll();
+        $songsHtml = $twig->render('songs.html.twig', [
             'desc' => 'Likede sange',
-            'songs' => [
-                new Song('Song one', ['Artist one']),
-                new Song('Song two', ['Artist one', 'Artist two']),
-            ]
+            'songs' => $songs,
         ]);
-        $context = ['songs' => $songs];
+        $context = ['songs' => $songsHtml];
     }
 
     $body = $mime === 'text/html'
