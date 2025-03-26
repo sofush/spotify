@@ -44,7 +44,7 @@
             padding-right: 18px;
         }
 
-        #songs>menu>li>*.play {
+        #songs .play {
             min-width: 64px;
             height: 64px;
             align-content: center;
@@ -52,9 +52,10 @@
             padding-right: 10px;
         }
 
-        #songs>menu>li>*.duration {
+        #songs .duration {
             font-family: 'Incosolata', sans-serif;
             font-weight: 450;
+            align-content: center;
         }
 
         #songs>menu>h2 {
@@ -62,10 +63,23 @@
             font-weight: 500;
         }
 
-        #songs>menu>.more {
+        #songs .more {
             color: var(--color-text-more);
-            font-weight: bold;
+            font-weight: 600;
             inset: 20px;
+        }
+
+        #songs .more {
+            color: var(--color-text-more);
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: underline solid 2px transparent;
+            transition: all ease 0.15s;
+            margin-right: auto;
+        }
+
+        #songs .more:hover {
+            text-decoration-color: var(--color-text-more);
         }
 
         #songs .artists {
@@ -76,24 +90,29 @@
 
         #songs .title {
             font-family: 'Inter', sans-serif;
-            font-size: 16px;
+            font-size: 17px;
+            color: #1f1f1f;
             font-weight: 600;
         }
 
         #songs .artist {
-            font-size: 12px;
+            font-size: 13px;
+            font-weight: 475;
+            color: #1f1f1f;
             font-family: 'Inter', sans-serif;
+        }
+
+        #songs .artist:hover {
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
         }
 
         #songs .credit {
             display: flex;
             flex-direction: column;
             list-style-type: none;
-            justify-content: center
-        }
-
-        #songs .artist:hover {
-            text-decoration: underline;
+            justify-content: center;
+            gap: 3px;
         }
     </style>
 
@@ -115,7 +134,7 @@
                     </ul>
                 </li>
             </ul>
-            <p class="duration">02:51</p>
+            <span class="duration">02:51</span>
             <div class="play">
                 <img src="/static/play.svg" width="21.34" height="26" alt="Play button">
             </div>
