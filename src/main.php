@@ -26,6 +26,11 @@ function serve_static(string $filename)
     $twig = new \Twig\Environment($loader);
 
     preg_match('/^[^\/]+\.(html|css|js|png|svg)$/', $filename, $ext);
+
+    if (count($ext) < 2) {
+        return;
+    }
+
     $mime = match ($ext[1]) {
         'css' => 'text/css',
         'js' => 'text/javascript',
