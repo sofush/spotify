@@ -26,7 +26,7 @@ class Song
     public function __construct($title, $artists)
     {
         $this->title = $title;
-        $this->groups = new ArrayCollection($artists ?? []);
+        $this->artists = new ArrayCollection($artists ?? []);
     }
 
     public function getTitle()
