@@ -1,5 +1,6 @@
 :root {
     --border-radius: 6px;
+    --color-bg-body: #FFF9D0;
     --color-bg-input: rgb(from #272727 r g b / 9%);
     --color-bg-accent: #CFCAA4;
     --color-text-brand: #04072d;
@@ -11,7 +12,7 @@
 }
 
 body {
-    background-color: #FFF9D0;
+    background-color: var(--color-bg-body);
     margin: 80px 120px;
 }
 
