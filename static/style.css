@@ -253,13 +253,13 @@ h2 {
     padding-left: 35px;
 }
 
-#player #seek-bar {
+#player #seeking-bar {
     height: 12px;
     background-color: var(--color-bg-accent);
     border-radius: 3px;
 }
 
-#player #seek-mark {
+#player #seeking-mark {
     background-color: #E07A5F;
     border-radius: 2px;
     transform: translate(0px, calc(1.00 * 12px / -2));
@@ -267,14 +267,14 @@ h2 {
     width: 12px;
 }
 
-#player #seek {
+#player #seeking {
     display: flex;
     flex-direction: column;
     width: min(650px, 65%);
     gap: 7px;
 }
 
-#player #seek>ul {
+#player #seeking>ul {
     display: flex;
     flex-direction: row;
     justify-content: space-between;

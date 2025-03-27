@@ -11,23 +11,23 @@
             {% endfor %}
         </ul>
     </ul>
-    <span id="seek">
+    <span id="seeking">
         <ul>
-            <li>00:00</li>
-            <li>{{ song.getDuration() }}</li>
+            <li id="seeking-current-time">00:00</li>
+            <li id="seeking-song-duration">00:00</li>
         </ul>
-        <div id="seek-bar">
-            <div id="seek-mark"></div>
+        <div id="seeking-bar">
+            <div id="seeking-mark"></div>
         </div>
     </span>
     <menu id="controls">
-        <li class="hover">
+        <li id="controls-prev-song" class="hover">
             <img src="/static/skip.svg" alt="Previous song">
         </li>
-        <li class="hover">
-            <img src="/static/play-control.svg" alt="Next song">
+        <li id="controls-play-pause" class="hover">
+            <img src="/static/play-control.svg" alt="Play or pause song">
         </li>
-        <li class="hover">
+        <li id="controls-next-song" class="hover">
             <img src="/static/skip.svg" alt="Next song">
         </li>
     </menu>
