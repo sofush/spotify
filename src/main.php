@@ -22,6 +22,35 @@ $stream = new StreamHandler('php://stdout');
 $stream->setFormatter(new ConsoleFormatter());
 $log->pushHandler($stream);
 
+function get_index_context($twig)
+{
+    $songsHtml = $twig->render('songs.html.twig', get_songs_context());
+    $albumsHtml = $twig->render('albums.html.twig', get_albums_context());
+    return [
+        'songsHtml' => $songsHtml,
+        'albumsHtml' => $albumsHtml,
+    ];
+}
+
+function get_songs_context()
+{
+    global $em;
+    $songs = $em->getRepository(Song::class)->findAll();
+    return [
+        'desc' => 'Likede sange',
+        'songs' => $songs,
+    ];
+}
+
+function get_albums_context()
+{
+    global $em;
+    $albums = $em->getRepository(Album::class)->findAll();
+    return [
+        'albums' => $albums,
+    ];
+}
+
 function serve_static(string $filename)
 {
     $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../static');
@@ -44,26 +73,18 @@ function serve_static(string $filename)
         default => 'text/plaintext',
     };
 
-    if ($filename === 'index.html') {
-        global $em;
-        $songs = $em->getRepository(Song::class)->findAll();
-        $songsHtml = $twig->render('songs.html.twig', [
-            'desc' => 'Likede sange',
-            'songs' => $songs,
-        ]);
-        $albums = $em->getRepository(Album::class)->findAll();
-        $albumsHtml = $twig->render('albums.html.twig', [
-            'albums' => $albums,
-        ]);
-        $context = [
-            'songs' => $songsHtml,
-            'albums' => $albumsHtml
-        ];
-    }
+    if ($mime === 'text/html') {
+        $context = match ($filename) {
+            'index.html' => get_index_context($twig),
+            'songs.html' => get_songs_context(),
+            'albums.html' => get_albums_context(),
+            default => [],
+        };
 
-    $body = $mime === 'text/html'
-        ? $twig->render("$filename.twig", $context ?? [])
-        : file_get_contents(__DIR__ . "/../static/$filename");
+        $body = $twig->render("$filename.twig", $context ?? []);
+    } else {
+        $body = file_get_contents(__DIR__ . "/../static/$filename");
+    }
 
     return new Response(
         200,
