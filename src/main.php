@@ -32,6 +32,13 @@ function get_index_context($twig)
     ];
 }
 
+function get_player_context()
+{
+    global $em;
+    $song = $em->getRepository(Song::class)->find(2);
+    return ['song' => $song];
+}
+
 function get_songs_context()
 {
     global $em;

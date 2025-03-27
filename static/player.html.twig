@@ -1,0 +1,25 @@
+<section id="player">
+    <img class="cover" src="/static/motherboard.jpg" alt="Song cover art">
+    <ul class="credit">
+        <h2 class="title">{{ song.getTitle() }}</h2>
+        <ul class="artists">
+            {% for artist in song.getArtists() %}
+            <li class="artist hover">{{ artist.getName() }}</li>
+            {% if artist != song.getArtists().last() %}
+            <li class="artist">,&nbsp;</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </ul>
+    <menu id="controls">
+        <li class="hover">
+            <img src="/static/skip.svg" alt="Previous song">
+        </li>
+        <li class="hover">
+            <img src="/static/play-control.svg" alt="Next song">
+        </li>
+        <li class="hover">
+            <img src="/static/skip.svg" alt="Next song">
+        </li>
+    </menu>
+</section>

@@ -192,6 +192,78 @@ h2 {
     transform: scale(1.03);
 }
 
+#player {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+#player .cover {
+    width: min(350px, 100%);
+    border-radius: var(--border-radius);
+    box-shadow: 0px 0px 25px var(--color-text-normal), 8px 8px 1px rgb(from var(--color-text-normal) r g b / 15%);
+}
+
+#player .credit {
+    background-color: var(--color-bg-body);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+}
+
+#player .title {
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    color: var(--color-text-normal);
+    font-weight: 600;
+    text-align: center;
+}
+
+#player .artist {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: var(--color-text-normal);
+    text-align: center;
+}
+
+#player .artists {
+    margin: auto;
+    display: flex;
+    list-style-type: none;
+    padding: 0px;
+}
+
+#player ul {
+    list-style-type: none;
+    padding: 0px;
+}
+
+#player #controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    background-color: var(--color-bg-input);
+    border: 3.5px solid var(--color-bg-accent);
+    border-radius: 16px;
+    height: 80px;
+    padding-right: 35px;
+    padding-left: 35px;
+}
+
+#player #controls>li {
+    width: 50px;
+    height: 50px;
+    align-content: center;
+    text-align: center;
+}
+
+#player #controls li:nth-child(1) {
+    transform: scaleX(-1);
+}
+
 #index>header {
     display: flex;
     flex-direction: row;
