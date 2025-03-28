@@ -258,6 +258,7 @@ h2 {
     height: 12px;
     background-color: var(--color-bg-accent);
     border-radius: 3px;
+    cursor: pointer;
 }
 
 #player #seeking-progress-bar {
@@ -279,6 +280,14 @@ h2 {
     transform: translate(0px, calc(1.00 * 12px / -2));
     height: 200%;
     width: 12px;
+}
+
+#player #seeking-mark {
+    cursor: grab;
+}
+
+#player #seeking-mark.grabbing {
+    cursor: grabbing;
 }
 
 #player #seeking {

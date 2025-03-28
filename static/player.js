@@ -12,13 +12,18 @@ const main = () => {
     const currentTimeEl = document.getElementById('seeking-current-time');
     const songDurationEl = document.getElementById('seeking-song-duration');
     const seekingMarkEl = document.getElementById('seeking-mark');
+    const seekingBarEl = document.getElementById('seeking-bar');
     const progressBarEl = document.getElementById('seeking-progress-bar');
+    let isDragging = false;
+    let offsetX, offsetY;
+    let pct = undefined;
 
-    const updateMark = () => {
-        const pct = audio.currentTime / audio.duration;
+    const updateProgress = (pct) => {
+        pct ??= audio.currentTime / audio.duration;
         const progress = Math.min(1, Math.max(0, pct));
         seekingMarkEl.style.marginLeft = `calc(${progress * 100}% - 12px * ${progress})`;
         progressBarEl.style.width = `${progress * 100}%`;
+        return progress;
     };
 
     togglePlayEl.addEventListener('click', () => {
@@ -27,6 +32,42 @@ const main = () => {
         } else {
             audio.pause();
         }
+    });
+
+    seekingBarEl.addEventListener('mousedown', e => {
+        const coords = seekingBarEl.getBoundingClientRect();
+        const x = e.clientX - coords.left;
+        pct = x / coords.width;
+        audio.currentTime = pct * audio.duration;
+        isDragging = true;
+        updateProgress(pct);
+    });
+
+    seekingMarkEl.addEventListener('mousedown', (e) => {
+        isDragging = true;
+
+        offsetX = e.clientX - seekingMarkEl.getBoundingClientRect().left;
+        offsetY = e.clientY - seekingMarkEl.getBoundingClientRect().top;
+
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            const coords = seekingBarEl.getBoundingClientRect();
+            const x = e.clientX - coords.left;
+            pct = x / coords.width;
+            pct = updateProgress(pct);
+            currentTimeEl.textContent = getTimeLabel(pct * audio.duration);
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (!pct) return;
+        if (isDragging)
+            audio.currentTime = pct * audio.duration;
+
+        isDragging = false;
     });
 
     audio.addEventListener('play', () => {
@@ -39,12 +80,14 @@ const main = () => {
 
     audio.addEventListener('timeupdate', _ => {
         currentTimeEl.textContent = getTimeLabel(audio.currentTime);
-        updateMark();
+
+        if (!isDragging)
+            updateProgress();
     });
 
     audio.addEventListener('durationchange', _ => {
         songDurationEl.textContent = getTimeLabel(audio.duration);
-        updateMark();
+        updateProgress();
     });
 };
 
