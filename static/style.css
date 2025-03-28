@@ -254,12 +254,26 @@ h2 {
 }
 
 #player #seeking-bar {
+    position: relative;
     height: 12px;
     background-color: var(--color-bg-accent);
     border-radius: 3px;
 }
 
+#player #seeking-progress-bar {
+    position: absolute;
+    top: 0px;
+    z-index: 100;
+    background-color: #81B29A;
+    border-radius: 2px;
+    height: 100%;
+    width: 0px;
+}
+
 #player #seeking-mark {
+    position: relative;
+    top: 0px;
+    z-index: 1000;
     background-color: #E07A5F;
     border-radius: 2px;
     transform: translate(0px, calc(1.00 * 12px / -2));
@@ -291,6 +305,26 @@ h2 {
 
 #player #controls li:nth-child(1) {
     transform: scaleX(-1);
+}
+
+#player #controls-play-pause img:nth-child(2) {
+    transform: translateY(calc(-100% - 4px));
+}
+
+#player #controls-play-pause:not(.paused) img:nth-child(1) {
+    visibility: hidden;
+}
+
+#player #controls-play-pause:not(.paused) img:nth-child(2) {
+    visibility: visible;
+}
+
+#player #controls-play-pause.paused img:nth-child(1) {
+    visibility: visible;
+}
+
+#player #controls-play-pause.paused img:nth-child(2) {
+    visibility: hidden;
 }
 
 #index>header {

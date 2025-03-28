@@ -1,4 +1,5 @@
 <section id="player">
+    <script type="module" src="/static/player.js"></script>
     <img class="cover" src="/static/motherboard.jpg" alt="Song cover art">
     <ul class="credit">
         <h2 class="title">{{ song.getTitle() }}</h2>
@@ -18,14 +19,16 @@
         </ul>
         <div id="seeking-bar">
             <div id="seeking-mark"></div>
+            <div id="seeking-progress-bar"></div>
         </div>
     </span>
     <menu id="controls">
         <li id="controls-prev-song" class="hover">
             <img src="/static/skip.svg" alt="Previous song">
         </li>
-        <li id="controls-play-pause" class="hover">
-            <img src="/static/play-control.svg" alt="Play or pause song">
+        <li id="controls-play-pause" class="hover paused">
+            <img src="/static/play-control.svg" alt="Play song">
+            <img src="/static/pause-control.svg" alt="Pause song">
         </li>
         <li id="controls-next-song" class="hover">
             <img src="/static/skip.svg" alt="Next song">
