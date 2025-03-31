@@ -6,93 +6,122 @@ const getTimeLabel = (time) => {
     return `${paddedMinutes}:${paddedSeconds}`;
 };
 
-const main = () => {
-    const audio = new Audio('/static/Harmony.ogx');
-    const togglePlayEl = document.getElementById('controls-play-pause');
-    const currentTimeEl = document.getElementById('seeking-current-time');
-    const songDurationEl = document.getElementById('seeking-song-duration');
-    const seekingMarkEl = document.getElementById('seeking-mark');
-    const seekingBarEl = document.getElementById('seeking-bar');
-    const progressBarEl = document.getElementById('seeking-progress-bar');
-    let isDragging = false;
-    let offsetX, offsetY;
-    let pct = undefined;
+export class Player {
+    constructor() {
+        this.init();
 
-    const updateProgress = (pct) => {
-        pct ??= audio.currentTime / audio.duration;
-        const progress = Math.min(1, Math.max(0, pct));
-        seekingMarkEl.style.marginLeft = `calc(${progress * 100}% - 12px * ${progress})`;
-        progressBarEl.style.width = `${progress * 100}%`;
-        return progress;
-    };
-
-    togglePlayEl.addEventListener('click', () => {
-        if (audio.paused) {
-            audio.play().catch(_ => console.error('Could not play audio.'));
-        } else {
-            audio.pause();
-        }
-    });
-
-    seekingBarEl.addEventListener('mousedown', e => {
-        const coords = seekingBarEl.getBoundingClientRect();
-        const x = e.clientX - coords.left;
-        pct = x / coords.width;
-        audio.currentTime = pct * audio.duration;
-        isDragging = true;
-        updateProgress(pct);
-    });
-
-    seekingMarkEl.addEventListener('mousedown', (e) => {
-        isDragging = true;
-
-        offsetX = e.clientX - seekingMarkEl.getBoundingClientRect().left;
-        offsetY = e.clientY - seekingMarkEl.getBoundingClientRect().top;
-
-        e.preventDefault();
-    });
-
-    document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-            const coords = seekingBarEl.getBoundingClientRect();
+        document.addEventListener('mousemove', (e) => {
+            if (!this.isDragging || !this.audio) return;
+            const coords = this.seekingBarEl.getBoundingClientRect();
             const x = e.clientX - coords.left;
-            pct = x / coords.width;
-            pct = updateProgress(pct);
-            currentTimeEl.textContent = getTimeLabel(pct * audio.duration);
+            this.pct = x / coords.width;
+            this.pct = this.updateProgress(this.pct);
+            this.currentTimeEl.textContent = getTimeLabel(this.pct * this.audio.duration);
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (!this.isDragging) return;
+            if (this.pct && this.audio)
+                this.audio.currentTime = this.pct * this.audio.duration;
+
+            this.isDragging = false;
+        });
+    }
+
+    init() {
+        this.isDragging = false;
+        this.offsetX = undefined;
+        this.offsetY = undefined;
+        this.pct = undefined;
+
+        this.togglePlayEl = document.getElementById('controls-play-pause');
+        this.currentTimeEl = document.getElementById('seeking-current-time');
+        this.songDurationEl = document.getElementById('seeking-song-duration');
+        this.seekingMarkEl = document.getElementById('seeking-mark');
+        this.seekingBarEl = document.getElementById('seeking-bar');
+        this.progressBarEl = document.getElementById('seeking-progress-bar');
+
+        if (this.togglePlayEl) {
+            this.togglePlayEl.addEventListener('click', () => {
+                if (!this.audio) return;
+
+                if (this.audio.paused) {
+                    this.audio.play().catch(_ => console.error('Could not play audio.'));
+                } else {
+                    this.audio.pause();
+                }
+            });
         }
-    });
 
-    document.addEventListener('mouseup', () => {
-        if (!pct) return;
-        if (isDragging)
-            audio.currentTime = pct * audio.duration;
+        if (this.seekingBarEl) {
+            this.seekingBarEl.addEventListener('mousedown', e => {
+                const coords = this.seekingBarEl.getBoundingClientRect();
+                const x = e.clientX - coords.left;
+                this.pct = x / coords.width;
+                this.isDragging = true;
+                this.updateProgress(this.pct);
+            });
+        }
 
-        isDragging = false;
-    });
+        if (this.seekingMarkEl) {
+            this.seekingMarkEl.addEventListener('mousedown', (e) => {
+                this.isDragging = true;
 
-    audio.addEventListener('play', () => {
-        togglePlayEl.classList.remove('paused');
-    });
+                this.offsetX = e.clientX - this.seekingMarkEl.getBoundingClientRect().left;
+                this.offsetY = e.clientY - this.seekingMarkEl.getBoundingClientRect().top;
 
-    audio.addEventListener('pause', () => {
-        togglePlayEl.classList.add('paused');
-    });
+                e.preventDefault();
+            });
+        }
+    }
 
-    audio.addEventListener('timeupdate', _ => {
-        currentTimeEl.textContent = getTimeLabel(audio.currentTime);
+    play(url) {
+        this.audio = new Audio(url);
 
-        if (!isDragging)
-            updateProgress();
-    });
+        this.audio.addEventListener('play', () => {
+            if (this.togglePlayEl)
+                this.togglePlayEl.classList.remove('paused');
+        });
 
-    audio.addEventListener('durationchange', _ => {
-        songDurationEl.textContent = getTimeLabel(audio.duration);
-        updateProgress();
-    });
+        this.audio.addEventListener('pause', () => {
+            if (this.togglePlayEl)
+                this.togglePlayEl.classList.add('paused');
+        });
+
+        this.audio.addEventListener('timeupdate', _ => {
+            if (this.isDragging)
+                return;
+
+            if (this.currentTimeEl && this.audio)
+                this.currentTimeEl.textContent = getTimeLabel(this.audio.currentTime);
+
+            this.updateProgress();
+        });
+
+        this.audio.addEventListener('durationchange', _ => {
+            if (this.songDurationEl)
+                this.songDurationEl.textContent = getTimeLabel(this.audio.duration);
+
+            this.updateProgress();
+        });
+    }
+
+    stop() {
+        if (!this.audio)
+            return;
+
+        this.audio.pause();
+        this.audio = undefined;
+    }
+
+    updateProgress(pct) {
+        if (!this.audio || !this.seekingMarkEl || !this.progressBarEl)
+            return 0;
+
+        pct ??= this.audio.currentTime / this.audio.duration;
+        const progress = Math.min(1, Math.max(0, pct));
+        this.seekingMarkEl.style.marginLeft = `calc(${progress * 100}% - 12px * ${progress})`;
+        this.progressBarEl.style.width = `${progress * 100}%`;
+        return progress;
+    }
 };
-
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", main);
-} else {
-    main();
-}

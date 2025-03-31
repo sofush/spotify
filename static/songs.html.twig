@@ -18,7 +18,7 @@
                 </li>
             </ul>
             <span class="duration">{{ song.getDuration() }}</span>
-            <div class="play hover">
+            <div class="play hover" data-id="{{ song.getId() }}" data-song-url="{{ song.getSongUrl() }}">
                 <img src="/static/play.svg" width="21.34" height="26" alt="Play button">
             </div>
             <div style="min-width: 10px;"></div>

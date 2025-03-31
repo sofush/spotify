@@ -21,9 +21,9 @@ foreach ($artists as $artist) {
     $em->persist($artist);
 }
 
-$motherboard = new Song('Motherboard', '02:51', 'motherboard.jpg', [$daftPunk]);
-$loseYourself = new Song('Lose Yourself to Dance', '05:53', 'motherboard.jpg', [$daftPunk, $pharell]);
-$contact = new Song('Contact', '06:23', 'motherboard.jpg', [$daftPunk]);
+$motherboard = new Song('Motherboard', '02:51', 'motherboard.jpg', 'Harmony.ogx', [$daftPunk]);
+$loseYourself = new Song('Lose Yourself to Dance', '05:53', 'motherboard.jpg', null, [$daftPunk, $pharell]);
+$contact = new Song('Contact', '06:23', 'motherboard.jpg', null, [$daftPunk]);
 $songs = [$motherboard, $loseYourself, $contact];
 
 foreach ($songs as $song) {

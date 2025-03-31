@@ -22,6 +22,9 @@ class Song
     #[ORM\Column(type: 'string')]
     private string $imageUrl;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private string|null $songUrl;
+
     /**
      * @var Collection<int, Artist>
      */
@@ -29,12 +32,18 @@ class Song
     #[ORM\JoinTable(name: 'songs_artists')]
     private Collection $artists;
 
-    public function __construct($title, $duration, $imageUrl, $artists)
+    public function __construct($title, $duration, $imageUrl, $songUrl, $artists)
     {
         $this->title = $title;
         $this->duration = $duration;
         $this->imageUrl = $imageUrl;
+        $this->songUrl = $songUrl;
         $this->artists = new ArrayCollection($artists ?? []);
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function getTitle()
@@ -65,6 +74,16 @@ class Song
     public function setImageUrl($imageUrl)
     {
         $this->imageUrl = $imageUrl;
+    }
+
+    public function getSongUrl()
+    {
+        return $this->songUrl;
+    }
+
+    public function setSongUrl($songUrl)
+    {
+        $this->songUrl = $songUrl;
     }
 
     public function getArtists()

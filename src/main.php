@@ -22,6 +22,9 @@ $stream = new StreamHandler('php://stdout');
 $stream->setFormatter(new ConsoleFormatter());
 $log->pushHandler($stream);
 
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../static');
+$twig = new \Twig\Environment($loader);
+
 function get_front_context($twig)
 {
     $songsHtml = $twig->render('songs.html.twig', get_songs_context());
@@ -32,10 +35,10 @@ function get_front_context($twig)
     ];
 }
 
-function get_player_context()
+function get_player_context($id)
 {
     global $em;
-    $song = $em->getRepository(Song::class)->find(2);
+    $song = $em->getRepository(Song::class)->find($id);
     return ['song' => $song];
 }
 
@@ -58,11 +61,9 @@ function get_albums_context()
     ];
 }
 
-function serve_static(string $filename)
+function serve_static(string $filename, array $context = null)
 {
-    $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../static');
-    $twig = new \Twig\Environment($loader);
-
+    global $twig;
     preg_match('/^[^\/]+\.(html|css|js|png|jpg|svg|ttf|ogx)$/', $filename, $ext);
 
     if (count($ext) < 2) {
@@ -82,14 +83,14 @@ function serve_static(string $filename)
     };
 
     if ($mime === 'text/html') {
-        $context = match ($filename) {
+        $context ??= match ($filename) {
             'front.html' => get_front_context($twig),
             'songs.html' => get_songs_context(),
             'albums.html' => get_albums_context(),
             default => [],
         };
 
-        $body = $twig->render("$filename.twig", $context ?? []);
+        $body = $twig->render("$filename.twig", $context);
     } else {
         $body = file_get_contents(__DIR__ . "/../static/$filename");
     }
@@ -124,7 +125,15 @@ $middlewares = [
             $filename = $matches[1];
             return serve_static($filename);
         }
-    }
+    },
+    function (ServerRequestInterface $request) {
+        $path = $request->getUri()->getPath();
+
+        if (preg_match('/^\/song\/(\d+)$/', $path, $matches)) {
+            $num = $matches[1];
+            return serve_static('player.html', get_player_context($num));
+        }
+    },
 ];
 
 $server = new HttpServer(function (ServerRequestInterface $request) use ($middlewares) {
