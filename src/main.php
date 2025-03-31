@@ -22,7 +22,7 @@ $stream = new StreamHandler('php://stdout');
 $stream->setFormatter(new ConsoleFormatter());
 $log->pushHandler($stream);
 
-function get_index_context($twig)
+function get_front_context($twig)
 {
     $songsHtml = $twig->render('songs.html.twig', get_songs_context());
     $albumsHtml = $twig->render('albums.html.twig', get_albums_context());
@@ -83,7 +83,7 @@ function serve_static(string $filename)
 
     if ($mime === 'text/html') {
         $context = match ($filename) {
-            'index.html' => get_index_context($twig),
+            'front.html' => get_front_context($twig),
             'songs.html' => get_songs_context(),
             'albums.html' => get_albums_context(),
             default => [],

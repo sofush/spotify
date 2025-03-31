@@ -7,6 +7,7 @@
     <title>Index</title>
     <link rel="stylesheet" href="/static/style.css">
     <link rel="icon" type="image/svg+xml" href="/static/logo.svg">
+    <script type="module" src="/static/index.js"></script>
 </head>
 
 <body id="index">
@@ -16,10 +17,7 @@
         <input type="text" name="search" id="search" placeholder="Søg efter sange, albummer, eller playlister">
     </header>
 
-    <main id="main">
-        {{ songsHtml|raw }}
-        {{ albumsHtml|raw }}
-    </main>
+    <main id="main"></main>
 </body>
 
 </html>
