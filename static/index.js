@@ -24,6 +24,8 @@ const loadPlayerPage = async (mainEl, id, songUrl) => {
 };
 
 const loadSearchPage = async (mainEl, query) => {
+    player.stop();
+
     const url = `/search?q=${encodeURIComponent(query)}`;
     const html = await loadStatic(url);
     mainEl.innerHTML = html;
@@ -46,6 +48,8 @@ const loadSearchPage = async (mainEl, query) => {
 };
 
 const loadFrontpage = async (mainEl) => {
+    player.stop();
+
     const html = await loadStatic(`/static/front.html`);
     mainEl.innerHTML = html;
 
@@ -64,8 +68,6 @@ const loadFrontpage = async (mainEl) => {
             }, '', '');
         });
     });
-
-    player.stop();
 };
 
 const main = async () => {
