@@ -43,6 +43,22 @@ function get_player_context($id)
     return ['song' => $song];
 }
 
+function get_album_context($id)
+{
+    global $twig;
+    global $em;
+    $album = $em->getRepository(Album::class)->find($id);
+    $songsContext = [
+        'desc' => 'Sange i albummet',
+        'songs' => $album->getSongs(),
+    ];
+    $songsHtml = $twig->render('songs.html.twig', $songsContext);
+    return [
+        'album' => $album,
+        'songsHtml' => $songsHtml,
+    ];
+}
+
 function get_songs_context()
 {
     global $em;
@@ -156,6 +172,14 @@ $middlewares = [
         if (preg_match('/^\/song\/(\d+)$/', $path, $matches)) {
             $num = $matches[1];
             return serve_static('player.html', get_player_context($num));
+        }
+    },
+    function (ServerRequestInterface $request) {
+        $path = $request->getUri()->getPath();
+
+        if (preg_match('/^\/album\/(\d+)$/', $path, $matches)) {
+            $num = $matches[1];
+            return serve_static('album.html', get_album_context($num));
         }
     },
     function (ServerRequestInterface $request) {

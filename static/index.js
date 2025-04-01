@@ -53,6 +53,44 @@ const loadFrontpage = async (mainEl) => {
     const html = await loadStatic(`/static/front.html`);
     mainEl.innerHTML = html;
 
+    const playButtonEls = document.getElementsByClassName('play');
+
+    Array.from(playButtonEls).forEach(element => {
+        element.addEventListener('click', _ => {
+            const id = element.dataset.id;
+            const songUrl = element.dataset.songUrl;
+            loadPlayerPage(mainEl, id, songUrl);
+
+            history.pushState({
+                name: 'player',
+                songId: id,
+                songUrl,
+            }, '', '');
+        });
+    });
+
+    const albumEls = document.getElementsByClassName('album');
+
+    Array.from(albumEls).forEach(element => {
+        element.addEventListener('click', _ => {
+            const id = element.dataset.id;
+            loadAlbumPage(mainEl, id);
+
+            history.pushState({
+                name: 'album',
+                albumId: id,
+            }, '', '');
+        });
+    });
+};
+
+const loadAlbumPage = async (mainEl, id) => {
+    player.stop();
+
+    const url = `/album/${id}`;
+    const html = await loadStatic(url);
+    mainEl.innerHTML = html;
+
     const elements = document.getElementsByClassName('play');
 
     Array.from(elements).forEach(element => {
@@ -90,6 +128,9 @@ const main = async () => {
                     break;
                 case 'search':
                     loadSearchPage(mainEl, e.state.query);
+                    break;
+                case 'album':
+                    loadAlbumPage(mainEl, e.state.albumId);
                     break;
                 default:
                     loadFrontpage(mainEl);

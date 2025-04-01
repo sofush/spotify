@@ -48,6 +48,12 @@ menu {
     padding: 0px;
 }
 
+ul {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+}
+
 h2 {
     margin: 0px;
     font-weight: 500;
@@ -106,27 +112,27 @@ h2 {
     align-content: center;
 }
 
-#songs .artists {
+.artists {
     display: flex;
     list-style-type: none;
     padding: 0px;
 }
 
-#songs .title {
+.title {
     font-family: 'Inter', sans-serif;
     font-size: 18px;
     color: var(--color-text-normal);
     font-weight: 600;
 }
 
-#songs .artist {
+.artist {
     font-size: 13px;
     font-weight: 475;
     color: var(--color-text-normal);
     font-family: 'Inter', sans-serif;
 }
 
-#songs .credit {
+.credit {
     display: flex;
     flex-direction: column;
     list-style-type: none;
@@ -334,6 +340,42 @@ h2 {
 
 #player #controls-play-pause.paused img:nth-child(2) {
     visibility: hidden;
+}
+
+#album .cover {
+    width: min(350px, 100%);
+    border-radius: var(--border-radius);
+    box-shadow: 0px 0px 25px var(--color-text-normal), 8px 8px 1px rgb(from var(--color-text-normal) r g b / 15%);
+}
+
+#album {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+#album .credit {
+    background-color: var(--color-bg-body);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#album .credit .title {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    color: var(--color-text-normal);
+    font-weight: 600;
+}
+
+#album .credit .artist {
+    font-size: 13px;
+    font-weight: 475;
+    color: var(--color-text-normal);
+    font-family: 'Inter', sans-serif;
+    text-align: center;
 }
 
 #index>header {

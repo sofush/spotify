@@ -40,6 +40,11 @@ class Album
         $this->songs = new ArrayCollection($songs ?? []);
     }
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function getArtist()
     {
         return $this->artist;

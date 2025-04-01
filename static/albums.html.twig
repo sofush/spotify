@@ -3,7 +3,7 @@
         <h2>Albummer</h2>
         <ul>
             {% for album in albums %}
-            <li class="hover">
+            <li class="hover album" data-id="{{ album.getId() }}">
                 <img class="cover" src="/static/{{ album.getImageUrl() }}" alt="Album cover art">
                 <span>{{ album.getTitle() }}</span>
             </li>
