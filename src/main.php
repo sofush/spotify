@@ -8,6 +8,7 @@ require_once __DIR__ . '/entity/song.php';
 require_once __DIR__ . '/entity/artist.php';
 require_once __DIR__ . '/entity/album.php';
 require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/search.php';
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -47,7 +48,7 @@ function get_songs_context()
     global $em;
     $songs = $em->getRepository(Song::class)->findAll();
     return [
-        'desc' => 'Likede sange',
+        'desc' => 'Sange',
         'songs' => $songs,
     ];
 }
@@ -58,6 +59,29 @@ function get_albums_context()
     $albums = $em->getRepository(Album::class)->findAll();
     return [
         'albums' => $albums,
+    ];
+}
+
+function get_search_context($query)
+{
+    global $twig;
+
+    $songs = search_songs($query);
+    $songsCtx = [
+        'desc' => 'Sange',
+        'songs' => $songs,
+    ];
+    $songsHtml = $twig->render('songs.html.twig', $songsCtx);
+
+    $albums = search_albums($query);
+    $albumsCtx = [
+        'albums' => $albums,
+    ];
+    $albumsHtml = $twig->render('albums.html.twig', $albumsCtx);
+
+    return [
+        'songsHtml' => $songsHtml,
+        'albumsHtml' => $albumsHtml,
     ];
 }
 
@@ -132,6 +156,19 @@ $middlewares = [
         if (preg_match('/^\/song\/(\d+)$/', $path, $matches)) {
             $num = $matches[1];
             return serve_static('player.html', get_player_context($num));
+        }
+    },
+    function (ServerRequestInterface $request) {
+        $path = $request->getUri()->getPath();
+
+        if (preg_match('/^\/search$/', $path, $matches)) {
+            $params = $request->getQueryParams();
+
+            if (array_key_exists('q', $params)) {
+                $query = $params['q'];
+            }
+
+            return serve_static('search.html', get_search_context($query ?? ''));
         }
     },
 ];
