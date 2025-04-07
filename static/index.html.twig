@@ -17,7 +17,42 @@
         <input type="text" name="search" id="search" placeholder="Søg efter sange, albummer, eller playlister">
     </header>
 
-    <main id="main"></main>
+
+    <main>
+        <nav id="nav">
+            <ul>
+                <li class="open-close hover">
+                    <img class="open" src="/static/sandwhich.svg" alt="Open navbar" height="20"><img class="close"
+                        src="/static/close.svg" alt="Close navbar" height="20">
+                    <a class="description">Luk navigation</a>
+                </li>
+                <li class="section"><img style="margin-right: 8px" src="/static/book.svg" height="14"
+                        alt="Sider billeder">Sider</li>
+                <ul>
+                    <li class="navigate" data-href="front">Forside</li>
+                    <li class="navigate" data-href="search">Søg</li>
+                    <li class="navigate" data-href="playlists">Playlister</li>
+                    <li class="navigate" data-href="albums">Albummer</li>
+                </ul>
+                <br>
+                <li><img style="margin-right: 8px" src="/static/disc.svg" height="18" alt="Albummer billede">Albummer
+                </li>
+                <ul>
+                    <li>Discovery</li>
+                    <li>Random Access Memories</li>
+                </ul>
+                <br>
+                <li><img style="margin-right: 8px" src="/static/note.svg" height="18" alt="Sange billede">Likede sange
+                </li>
+                <ul>
+                    <li>Motherboard</li>
+                    <li>Contact</li>
+                </ul>
+            </ul>
+        </nav>
+
+        <article id="main"></article>
+    </main>
 </body>
 
 </html>

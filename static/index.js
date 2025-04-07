@@ -111,6 +111,12 @@ const loadAlbumPage = async (mainEl, id) => {
 const main = async () => {
     const mainEl = document.getElementById('main');
     const searchEl = document.getElementById('search');
+    const navEl = document.getElementById('nav');
+    const navOpenCloseEl = document.getElementsByClassName('open-close')[0];
+
+    navOpenCloseEl.addEventListener('click', _ => {
+        navEl.classList.toggle('collapsed');
+    });
 
     searchEl.addEventListener('input', async _ => {
         console.log(searchEl.value);
