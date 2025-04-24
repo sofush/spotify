@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+namespace Sofus\Spotify;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/logging/formatter.php';
@@ -10,9 +11,15 @@ require_once __DIR__ . '/entity/album.php';
 require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/search.php';
 
+use Album;
+use Color;
+use ColorCode;
+use Colorizer;
+use ConsoleFormatter;
+use Song;
+
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-
 use React\Http\HttpServer;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Message\Response;
@@ -213,7 +220,7 @@ $server = new HttpServer(function (ServerRequestInterface $request) use ($middle
     );
 });
 
-$server->on('error', function (Throwable $e) use ($log) {
+$server->on('error', function ($e) use ($log) {
     $file = mb_strtolower($e->getFile());
     $dir = mb_strtolower(getcwd());
 

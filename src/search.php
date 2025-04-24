@@ -1,5 +1,9 @@
 <?php
 
+namespace Sofus\Spotify;
+
+use Album;
+use Song;
 use \Fuse\Fuse;
 
 function search_songs($query)

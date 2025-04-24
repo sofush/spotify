@@ -1,0 +1,18 @@
+# https://taskfile.dev
+
+version: "3"
+
+tasks:
+  init-db:
+    cmds:
+      - php bin/init_db.php
+
+  run:
+    deps: [init-db]
+    cmds:
+      - systemfd --no-pid -s http::0.0.0.0:8080 -- php src/main.php
+
+  watch:
+    deps: [init-db]
+    cmds:
+      - watchexec -r -w src -w static -w bin/init_db.php systemfd --no-pid -s http::0.0.0.0:8080 -- php src/main.php

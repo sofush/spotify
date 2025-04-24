@@ -2,57 +2,59 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <link rel="icon" type="image/svg+xml" href="/static/logo.svg">
-    <script type="module" src="/static/index.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Index</title>
+	<link rel="stylesheet" href="/static/style.css">
+	<link rel="icon" type="image/svg+xml" href="/static/logo.svg">
+	<script type="module" src="/static/index.js"></script>
 </head>
 
 <body id="index">
-    <header>
-        <img src="/static/logo.png" alt="Logo" height="80" width="80">
-        <h1>Musikafspiller</h1>
-        <input type="text" name="search" id="search" placeholder="Søg efter sange, albummer, eller playlister">
-    </header>
+	<header>
+		<img src="/static/logo.png" alt="Logo" height="80" width="80">
+		<h1>Musikafspiller</h1>
+		<input type="text" name="search" id="search" placeholder="Søg efter sange, albummer, eller playlister">
+	</header>
 
+	<main>
+		<nav id="nav">
+			<ul>
+				<li class="open-close hover">
+					<img class="open" src="/static/sandwhich.svg" alt="Open navbar" height="20"><img class="close"
+						src="/static/close.svg" alt="Close navbar" height="20">
+					<a class="description">Luk navigation</a>
+				</li>
+				<li class="section">
+					<img style="margin-right: 8px" src="/static/book.svg" height="22" width="22" alt="Sider billeder">Sider
+					<ul>
+						<li class="navigate" data-href="front">Forside</li>
+						<li class="navigate" data-href="search">Søg</li>
+						<li class="navigate" data-href="playlists">Playlister</li>
+						<li class="navigate" data-href="albums">Albummer</li>
+					</ul>
+				</li>
+				<br>
+				<li class="section">
+					<img style="margin-right: 8px" src="/static/disc.svg" height="22" width="22" alt="Albummer billede">Albummer
+					<ul>
+						<li>Discovery</li>
+						<li>Random Access Memories</li>
+					</ul>
+				</li>
+				<br>
+				<li class="section">
+					<img style="margin-right: 8px" src="/static/note.svg" height="22" width="22" alt="Sange billede">Likede sange
+					<ul>
+						<li>Motherboard</li>
+						<li>Contact</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
 
-    <main>
-        <nav id="nav">
-            <ul>
-                <li class="open-close hover">
-                    <img class="open" src="/static/sandwhich.svg" alt="Open navbar" height="20"><img class="close"
-                        src="/static/close.svg" alt="Close navbar" height="20">
-                    <a class="description">Luk navigation</a>
-                </li>
-                <li class="section"><img style="margin-right: 8px" src="/static/book.svg" height="14"
-                        alt="Sider billeder">Sider</li>
-                <ul>
-                    <li class="navigate" data-href="front">Forside</li>
-                    <li class="navigate" data-href="search">Søg</li>
-                    <li class="navigate" data-href="playlists">Playlister</li>
-                    <li class="navigate" data-href="albums">Albummer</li>
-                </ul>
-                <br>
-                <li><img style="margin-right: 8px" src="/static/disc.svg" height="18" alt="Albummer billede">Albummer
-                </li>
-                <ul>
-                    <li>Discovery</li>
-                    <li>Random Access Memories</li>
-                </ul>
-                <br>
-                <li><img style="margin-right: 8px" src="/static/note.svg" height="18" alt="Sange billede">Likede sange
-                </li>
-                <ul>
-                    <li>Motherboard</li>
-                    <li>Contact</li>
-                </ul>
-            </ul>
-        </nav>
-
-        <article id="main"></article>
-    </main>
+		<article id="main"></article>
+	</main>
 </body>
 
 </html>
