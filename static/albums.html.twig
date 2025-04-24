@@ -1,14 +1,14 @@
 <section id="albums">
-    <menu>
-        <h2>Albummer</h2>
-        <ul>
-            {% for album in albums %}
-            <li class="hover album" data-id="{{ album.getId() }}">
-                <img class="cover" src="/static/{{ album.getImageUrl() }}" alt="Album cover art">
-                <span>{{ album.getTitle() }}</span>
-            </li>
-            {% endfor %}
-        </ul>
-        <span class="more hover">Vis flere</span>
-    </menu>
+	<menu>
+		<h2>Albummer</h2>
+		<ul>
+			{% for album in albums %}
+			<li class="hover album" data-id="{{ album.getId() }}">
+				<img class="cover" src="/static/{{ album.getImageUrl() }}" alt="Album cover art">
+				<span>{{ album.getTitle() }}</span>
+			</li>
+			{% endfor %}
+		</ul>
+		<span class="more hover">Vis flere</span>
+	</menu>
 </section>

@@ -1,36 +1,36 @@
 <section id="player">
-    <img class="cover" src="/static/{{ song.getImageUrl() }}" alt="Song cover art">
-    <ul class="credit">
-        <h2 class="title">{{ song.getTitle() }}</h2>
-        <ul class="artists">
-            {% for artist in song.getArtists() %}
-            <li class="artist hover">{{ artist.getName() }}</li>
-            {% if artist != song.getArtists().last() %}
-            <li class="artist">,&nbsp;</li>
-            {% endif %}
-            {% endfor %}
-        </ul>
-    </ul>
-    <span id="seeking">
-        <ul>
-            <li id="seeking-current-time">00:00</li>
-            <li id="seeking-song-duration">00:00</li>
-        </ul>
-        <div id="seeking-bar">
-            <div id="seeking-mark"></div>
-            <div id="seeking-progress-bar"></div>
-        </div>
-    </span>
-    <menu id="controls">
-        <li id="controls-prev-song" class="hover">
-            <img src="/static/skip.svg" alt="Previous song">
-        </li>
-        <li id="controls-play-pause" class="hover paused">
-            <img src="/static/play-control.svg" alt="Play song">
-            <img src="/static/pause-control.svg" alt="Pause song">
-        </li>
-        <li id="controls-next-song" class="hover">
-            <img src="/static/skip.svg" alt="Next song">
-        </li>
-    </menu>
+	<img class="cover" src="/static/{{ song.getImageUrl() }}" alt="Song cover art">
+	<ul class="credit">
+		<h2 class="title">{{ song.getTitle() }}</h2>
+		<ul class="artists">
+			{% for artist in song.getArtists() %}
+			<li class="artist hover">{{ artist.getName() }}</li>
+			{% if artist != song.getArtists().last() %}
+			<li class="artist">,&nbsp;</li>
+			{% endif %}
+			{% endfor %}
+		</ul>
+	</ul>
+	<span id="seeking">
+		<ul>
+			<li id="seeking-current-time">00:00</li>
+			<li id="seeking-song-duration">00:00</li>
+		</ul>
+		<div id="seeking-bar">
+			<div id="seeking-mark"></div>
+			<div id="seeking-progress-bar"></div>
+		</div>
+	</span>
+	<menu id="controls">
+		<li id="controls-prev-song" class="hover">
+			<img src="/static/skip.svg" alt="Previous song">
+		</li>
+		<li id="controls-play-pause" class="hover paused">
+			<img src="/static/play-control.svg" alt="Play song">
+			<img src="/static/pause-control.svg" alt="Pause song">
+		</li>
+		<li id="controls-next-song" class="hover">
+			<img src="/static/skip.svg" alt="Next song">
+		</li>
+	</menu>
 </section>

@@ -1,29 +1,29 @@
 <section id="songs">
-    <menu>
-        <h2>{{ desc }}</h2>
-        {% for song in songs %}
-        <li>
-            <img class="cover" src="/static/{{ song.getImageUrl() }}" alt="Cover art">
-            <ul class="credit">
-                <li class="title">{{ song.getTitle() }}</li>
-                <li>
-                    <ul class="artists">
-                        {% for artist in song.getArtists() %}
-                        <li class="artist hover">{{ artist.getName() }}</li>
-                        {% if artist != song.getArtists().last() %}
-                        <li class="artist">,&nbsp;</li>
-                        {% endif %}
-                        {% endfor %}
-                    </ul>
-                </li>
-            </ul>
-            <span class="duration">{{ song.getDuration() }}</span>
-            <div class="play hover" data-id="{{ song.getId() }}" data-song-url="{{ song.getSongUrl() }}">
-                <img src="/static/play.svg" width="21.34" height="26" alt="Play button">
-            </div>
-            <div style="min-width: 10px;"></div>
-        </li>
-        {% endfor %}
-        <span class="more hover">Vis flere</span>
-    </menu>
+	<menu>
+		<h2>{{ desc }}</h2>
+		{% for song in songs %}
+		<li>
+			<img class="cover" src="/static/{{ song.getImageUrl() }}" alt="Cover art">
+			<ul class="credit">
+				<li class="title">{{ song.getTitle() }}</li>
+				<li>
+					<ul class="artists">
+						{% for artist in song.getArtists() %}
+						<li class="artist hover">{{ artist.getName() }}</li>
+						{% if artist != song.getArtists().last() %}
+						<li class="artist">,&nbsp;</li>
+						{% endif %}
+						{% endfor %}
+					</ul>
+				</li>
+			</ul>
+			<span class="duration">{{ song.getDuration() }}</span>
+			<div class="play hover" data-id="{{ song.getId() }}" data-song-url="{{ song.getSongUrl() }}">
+				<img src="/static/play.svg" width="21.34" height="26" alt="Play button">
+			</div>
+			<div style="min-width: 10px;"></div>
+		</li>
+		{% endfor %}
+		<span class="more hover">Vis flere</span>
+	</menu>
 </section>

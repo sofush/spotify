@@ -1,10 +1,10 @@
 <section id="album">
-    <img class="cover" src="/static/{{ album.getImageUrl() }}" alt="Song cover art">
-    <ul class="credit">
-        <h2 class="title">{{ album.getTitle() }}</h2>
-        <ul class="artists">
-            <li class="artist hover">{{ album.getArtist().getName() }}</li>
-        </ul>
-    </ul>
+	<img class="cover" src="/static/{{ album.getImageUrl() }}" alt="Song cover art">
+	<ul class="credit">
+		<h2 class="title">{{ album.getTitle() }}</h2>
+		<ul class="artists">
+			<li class="artist hover">{{ album.getArtist().getName() }}</li>
+		</ul>
+	</ul>
 </section>
 {{songsHtml|raw}}
