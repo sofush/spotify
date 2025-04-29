@@ -33,7 +33,15 @@ foreach ($songs as $song) {
 $randomAccess = new Album('Random Access Memories', 'motherboard.jpg', $daftPunk, $songs);
 $em->persist($randomAccess);
 
-$other = new Album('Discovery', 'discovery.png', $daftPunk, []);
-$em->persist($other);
+$motherboard = new Song('One More Time', '05:21', 'discovery.png', 'Harmony.ogx', [$daftPunk]);
+$loseYourself = new Song('Aerodynamic', '03:28', 'discovery.png', null, [$daftPunk]);
+$contact = new Song('Nightvision', '01:44', 'discovery.png', null, [$daftPunk]);
+$songs = [$motherboard, $loseYourself, $contact];
+
+foreach ($songs as $song) {
+    $em->persist($song);
+}
+$discovery = new Album('Discovery', 'discovery.png', $daftPunk, $songs);
+$em->persist($discovery);
 
 $em->flush();
