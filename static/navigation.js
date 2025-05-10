@@ -79,6 +79,14 @@ export class Navigator {
 				});
 			}
 
+			const addAlbumEls = this.containerEl.getElementsByClassName('add-album');
+
+			for (const el of addAlbumEls) {
+				el.addEventListener('click', _ => {
+					this.load('add-album', {});
+				});
+			}
+
 			instance.disconnect();
 		});
 
@@ -119,6 +127,68 @@ export class AlbumPage extends Page {
 		const url = new URL(`${window.location.origin}/album/${id}`);
 		this.url = url;
 		super.load(containerEl, args, pushState);
+	}
+}
+
+export class AddAlbumPage extends Page {
+	constructor() {
+		super('add-album', undefined, true);
+	}
+
+	async load(containerEl, args, pushState) {
+		const url = new URL(`${window.location.origin}/add-album`);
+		this.url = url;
+		super.load(containerEl, args, pushState);
+
+		const observer = new MutationObserver((_, instance) => {
+			const addAlbumEl = document.getElementById('add-album');
+			const searchInputEl = addAlbumEl.getElementsByClassName('search')[0];
+			const keyInputEl = addAlbumEl.getElementsByClassName('key')[0];
+			const secretInputEl = addAlbumEl.getElementsByClassName('secret')[0];
+			const containerEl = addAlbumEl.getElementsByClassName('container')[0];
+
+			addAlbumEl.addEventListener('submit', async e => {
+				e.preventDefault();
+
+				console.log(`Searching discogs for "${searchInputEl.value}"`);
+				const baseURL = 'https://api.discogs.com';
+				const url = new URL('/database/search', baseURL);
+				url.searchParams.append('q', searchInputEl.value);
+				url.searchParams.append('key', keyInputEl.value);
+				url.searchParams.append('secret', secretInputEl.value);
+				url.searchParams.append('type', 'master');
+				url.searchParams.append('format', 'album');
+				console.log(`API request URL: ${url.toString()}`);
+
+				const headers = new Headers({
+					"Accept": "application/json",
+					"Content-Type": "application/json",
+					"User-Agent": "SofushMusicPlayer/0.1"
+				});
+				const header = await fetch(url, {
+					headers: headers
+				});
+
+				if (!header.ok) {
+					console.log('Header is not OK.');
+					return;
+				}
+
+				const body = await header.json();
+
+				for (const result of body.results.slice(3)) {
+					const title = result.title;
+					console.log(`Title: ${title}`);
+					const img = document.createElement("img");
+					img.src = result.thumb;
+					containerEl.appendChild(img);
+				}
+			});
+
+			instance.disconnect();
+		});
+
+		observer.observe(containerEl, { childList: true, subtree: true });
 	}
 }
 

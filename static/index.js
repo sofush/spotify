@@ -1,4 +1,4 @@
-import { Navigator, FrontPage, SearchPage, AlbumPage, PlayerPage } from '/static/navigation.js';
+import { Navigator, FrontPage, SearchPage, AlbumPage, AddAlbumPage, PlayerPage } from '/static/navigation.js';
 
 const main = async () => {
 	const mainEl = document.getElementById('main');
@@ -12,6 +12,7 @@ const main = async () => {
 	navigator.insert(new SearchPage());
 	navigator.insert(new AlbumPage());
 	navigator.insert(new PlayerPage());
+	navigator.insert(new AddAlbumPage());
 
 	await navigator.load('frontpage');
 	window.history.replaceState({ name: 'frontpage' }, '', '');

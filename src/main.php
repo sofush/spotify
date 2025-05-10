@@ -192,6 +192,13 @@ $middlewares = [
     function (ServerRequestInterface $request) {
         $path = $request->getUri()->getPath();
 
+        if ($path === '/add-album') {
+            return serve_static('add-album.html');
+        }
+    },
+    function (ServerRequestInterface $request) {
+        $path = $request->getUri()->getPath();
+
         if (preg_match('/^\/search$/', $path, $matches)) {
             $params = $request->getQueryParams();
 
