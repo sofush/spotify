@@ -3,6 +3,7 @@
 	<ul class="credit">
 		<h2 class="title">{{ song.getTitle() }}</h2>
 		<ul class="artists">
+			<!-- iterer over kunstnere i sangen -->
 			{% for artist in song.getArtists() %}
 			<li class="artist hover">{{ artist.getName() }}</li>
 			{% if artist != song.getArtists().last() %}
@@ -11,6 +12,8 @@
 			{% endfor %}
 		</ul>
 	</ul>
+	<!-- dette element viser hvor i sangen den afspiller -->
+	<!-- brugeren kan trække i den for at "søge" i lydstrømmen -->
 	<span id="seeking">
 		<ul>
 			<li id="seeking-current-time">00:00</li>
@@ -21,6 +24,8 @@
 			<div id="seeking-progress-bar"></div>
 		</div>
 	</span>
+	<!-- dette element indeholder knapper til at kontrollere afspilleren -->
+	<!-- brugeren kan trykke på knapperne for at skippe sang, eller pause/afspille -->
 	<menu id="controls">
 		<li id="controls-prev-song" class="hover">
 			<img src="/static/skip.svg" alt="Previous song">

@@ -1,6 +1,7 @@
 <section id="songs">
 	<menu>
 		<h2>{{ desc }}</h2>
+		<!-- iterer over sange i konteksten -->
 		{% for song in songs %}
 		<li>
 			<img class="cover" src="/static/{{ song.getImageUrl() }}" alt="Cover art">
@@ -8,8 +9,10 @@
 				<li class="title">{{ song.getTitle() }}</li>
 				<li>
 					<ul class="artists">
+						<!-- iterer over kunstnere i sangen -->
 						{% for artist in song.getArtists() %}
 						<li class="artist hover">{{ artist.getName() }}</li>
+						<!-- placer et komma mellem navnene på kunstnerne -->
 						{% if artist != song.getArtists().last() %}
 						<li class="artist">,&nbsp;</li>
 						{% endif %}
